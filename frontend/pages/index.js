@@ -1,15 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import ChatContainer from "../components/ChatContainer"
 import { BsLinkedin } from 'react-icons/bs'
 import { AiOutlineMail, AiOutlineInfoCircle, AiOutlineCloseCircle } from 'react-icons/ai'
 
-
 export default function Home() {
   const [show, setShow] = useState(true)
+  const [windowWidth, setWindowWidth] = useState()
+  
+  const updateWindowWidth = () => {
+    const width = window.innerWidth
+    setWindowWidth(width)
+  }
+
+  useEffect(() => {
+    updateWindowWidth()
+    window.addEventListener("resize", updateWindowWidth)
+  },[])
+
+  useEffect(() => {
+    windowWidth < 720 ? setShow(false) : setShow(true)
+  },[windowWidth])
+
 
   const InfoSection = () => (
-    <div className={`${show ? "block transition-opacity ease-in duration-700 opacity-100" : "hidden" } "flex flex-col md:w-1/2 m-auto px-2 pb-6"`}>
+    <div className={`${show ? "transition-all ease-in duration-700 block" : "transition-all ease-in duration-700 hidden" } "flex flex-col md:w-1/2 m-auto px-2 pb-6"`}>
         <div className="px-4 text-gray-200 px-4">
           <h1 className="py-2">
             <span className="text-3xl text-gray-100 font-semibold">Hi, my name is&nbsp;</span>
@@ -48,16 +63,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gradient-to-l from-rose-400 via-fuchsia-500 to-indigo-500">
-    
-
       <InfoButton /> 
       <InfoSection />
       
       <div className="flex-grow overflow-y-hidden w-full h-full md:w-1/2 m-auto px-2 py-2 md:px-8 md:py-12">
         <ChatContainer />
       </div>
-      
-    
     </div>
   )
 }

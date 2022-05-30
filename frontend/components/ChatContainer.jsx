@@ -43,24 +43,22 @@ const ChatContainer = () => {
 
   const RenderChats = () => {
     const GuestChat = ({msg, i}) => (
-      <li key={i} className="justify-start flex">
-        <div className="justify-start rounded-r-2xl rounded-bl-2xl bg-green-200 max-w-xl px-4 py-2 text-gray-700 shadow">
-          <span className="block">{msg}</span>
-        </div>
-      </li>
+      <div className="justify-start rounded-r-2xl rounded-bl-2xl bg-green-200 max-w-xl px-4 py-2 text-gray-700 shadow">
+        <span className="block">{i} {msg}</span>
+      </div>
     )
   
     const BotChat = ({msg, i}) => (
-      <li key={i} className="justify-end flex">
-        <div className="justify-end rounded-l-2xl rounded-br-2xl bg-blue-200 max-w-xl px-4 py-2 text-gray-700 shadow">
-          <span className="block">{msg}</span>
-        </div>
-      </li>
+      <div className="justify-end rounded-l-2xl rounded-br-2xl bg-blue-200 max-w-xl px-4 py-2 text-gray-700 shadow">
+        <span className="block">{i} {msg}</span>
+      </div>
     )
 
     return (
       chats.map((chat,i) => (
-        chat.user === 'bot' ? <BotChat msg={chat.msg} i={i}/> : <GuestChat msg={chat.msg} i={i}/>
+        <li key={i} className={`${chat.user === 'bot' ? 'justify-end' : 'justify-start'} flex`}>
+          {chat.user === 'bot' ? <BotChat msg={chat.msg} i={i}/> : <GuestChat msg={chat.msg} i={i}/>}
+        </li>
       ))
     )
   }
@@ -72,7 +70,7 @@ const ChatContainer = () => {
         {/* Chat section */}
         <ul className="grow flex flex-col space-y-2 overflow-y-auto px-4 py-2 rounded-t-lg">
             {RenderChats()}
-            <li ref={messagesEndRef} />
+            <div  ref={messagesEndRef} />
         </ul>
 
         {/* Send message section */}
